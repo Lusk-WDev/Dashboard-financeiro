@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Pessoal</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container">
+        <!-- Sidebar para dashboards -->
+        <aside class="sidebar">
+            <h3>Dashboards</h3>
+            <ul id="lista-dashboards"></ul>
+            <button id="add-dashboard" onclick="criarNovoDashboard()">+</button>
+        </aside>
+
+        <!-- Conteúdo principal -->
+        <main class="main-content">
+            <header>
+                <h1 id="titulo-dashboard">Dashboard: Pessoal</h1>
+                <p>Controle de Gastos - Lusk-WDev</p>
+            </header>
+
+            <!-- Cards de Resumo -->
+            <section class="resumo">
+                <div class="card">
+                    <h3>Saldo Atual</h3>
+                    <p id="saldo-total">R$ 0,00</p>
+                </div>
+                <div class="card entrada">
+                    <h3>Entradas</h3>
+                    <p id="resumo-entradas">R$ 0,00</p>
+                </div>
+                <div class="card saida">
+                    <h3>Saídas</h3>
+                    <p id="resumo-saidas">R$ 0,00</p>
+                </div>
+            </section>
+
+            <!-- Formulário de Cadastro -->
+            <section class="cadastro">
+                <h3>Nova Transação</h3>
+                <form id="form-transacao">
+                    <input type="text" id="descricao" placeholder="Descrição (ex: Teclado AULA F75)" required>
+                    <input type="number" id="valor" placeholder="Valor (ex: 350)" required>
+                    <select id="tipo">
+                        <option value="entrada">Entrada</option>
+                        <option value="saida">Saída</option>
+                    </select>
+                    <button type="submit">Adicionar</button>
+                </form>
+            </section>
+
+            <!-- Lista de Transações -->
+            <section class="historico">
+                <h3>Histórico</h3>
+                <ul id="lista-transacoes" class="transacoes">
+                    <!-- O JavaScript vai injetar os itens aqui -->
+                </ul>
+            </section>
+        </main>
+    </div>
+
+    <!-- Importante: Chamando os scripts no final do body -->
+    <script type="module" src="script.js"></script>
+</body>
+</html

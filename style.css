@@ -1,0 +1,245 @@
+/* Configurações Gerais */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #0b0e11; /* Fundo Dark estilo GitHub/VS Code */
+    color: #e6edf3;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    padding: 40px 20px;
+}
+
+.container {
+    width: min(1200px, 100%);
+    display: flex;
+    gap: 20px;
+    margin: 0 auto;
+}
+
+.sidebar {
+    width: 250px;
+    background: #161b22;
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid #30363d;
+}
+
+.sidebar h3 {
+    margin-bottom: 15px;
+    color: #e6edf3;
+}
+
+#lista-dashboards {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 20px;
+}
+
+#lista-dashboards li {
+    margin-bottom: 10px;
+}
+
+.dashboard-row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+#lista-dashboards button,
+.dashboard-btn {
+    flex: 1;
+    padding: 10px;
+    background: transparent;
+    color: #e6edf3;
+    border: 2px solid #58a6ff;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-weight: bold;
+    text-align: left;
+}
+
+#lista-dashboards button:hover,
+.dashboard-btn:hover {
+    background: rgba(88, 166, 255, 0.1);
+}
+
+.dashboard-btn.ativo {
+    box-shadow: 0 0 0 3px rgba(255,255,255,0.12);
+    transform: scale(1.02);
+}
+
+.delete-dashboard-btn {
+    width: 40px;
+    padding: 10px;
+    border: none;
+    border-radius: 6px;
+    background: rgba(248, 81, 73, 0.15);
+    color: #f85149;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.delete-dashboard-btn:hover {
+    background: rgba(248, 81, 73, 0.3);
+}
+
+.sidebar #add-dashboard {
+    width: 100%;
+    padding: 10px;
+    background: #238636;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.sidebar #add-dashboard:hover {
+    background: #2ea043;
+}
+
+.main-content {
+    flex: 1;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+header h1 {
+    font-size: 2.5rem;
+    color: gold; /* Azul Tech */
+}
+
+header p {
+    color: #8b949e;
+}
+
+/* Cards de Resumo - Layout Flexbox */
+.resumo {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.card {
+    background: #161b22;
+    flex: 1;
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid #30363d;
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    border-color: #58a6ff;
+}
+
+.card h3 {
+    font-size: 0.9rem;
+    color: #8b949e;
+    margin-bottom: 10px;
+}
+
+.card p {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.card.entrada p { color: #3fb950; } /* Verde Sucesso */
+.card.saida p { color: #f85149; }   /* Vermelho Alerta */
+
+/* Formulário de Cadastro */
+.cadastro {
+    background: #161b22;
+    padding: 25px;
+    border-radius: 12px;
+    border: 1px solid #30363d;
+    margin-bottom: 30px;
+}
+
+#form-transacao {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr auto;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+input, select, button {
+    padding: 12px;
+    border-radius: 6px;
+    border: 1px solid #30363d;
+    background: #0d1117;
+    color: white;
+    outline: none;
+}
+
+input:focus { border-color: #58a6ff; }
+
+button {
+    background: #238636;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    border: none;
+    transition: background 0.3s;
+}
+
+button:hover { background: #2ea043; }
+
+/* Lista de Transações */
+.historico h3 {
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #30363d;
+}
+
+.transacoes {
+    list-style: none;
+}
+
+.transacao-item {
+    background: #161b22;
+    margin-bottom: 10px;
+    padding: 15px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-left: 5px solid #30363d;
+}
+
+.transacao-item.entrada { border-left-color: #3fb950; }
+.transacao-item.saida { border-left-color: #f85149; }
+
+.transacao-item span { font-weight: 500; }
+
+.delete-btn {
+    background: transparent;
+    border: none;
+    color: #f85149;
+    cursor: pointer;
+    font-size: 1.2rem;
+    margin-left: 10px;
+    padding: 0 5px;
+    transition: opacity 0.3s;
+}
+
+.delete-btn:hover {
+    opacity: 0.7;
+}
