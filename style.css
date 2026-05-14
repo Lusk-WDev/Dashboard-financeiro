@@ -243,3 +243,11 @@ button:hover { background: #2ea043; }
 .delete-btn:hover {
     opacity: 0.7;
 }
+
+/* Quando a tela tiver no máximo 768px de largura (celulares), o CSS abaixo entra em ação: */
+@media (max-width: 768px) {
+    .caixa-transacao {
+        width: 100%; /* Faz a caixa ocupar a tela toda */
+        flex-direction: column; /* Empilha os botões em vez de deixá-los lado a lado */
+    }
+}
