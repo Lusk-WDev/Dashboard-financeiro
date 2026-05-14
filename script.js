@@ -212,5 +212,6 @@ formulario.addEventListener('submit', (event) => {
     formulario.reset();
 });
 
+// Atualização para testar a assinatura do Git
 // Rodar a aplicação
 init();
