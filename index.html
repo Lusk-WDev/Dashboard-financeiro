@@ -11,15 +11,42 @@
     <div class="container">
         <!-- Sidebar para dashboards -->
         <aside class="sidebar">
-            <h3>Dashboards</h3>
+            <div class="sidebar-header">
+                <h3>Dashboards</h3>
+                <button id="toggle-dashboard-builder" class="toggle-builder-btn" type="button">Configurar</button>
+            </div>
             <ul id="lista-dashboards"></ul>
-            <button id="add-dashboard" onclick="criarNovoDashboard()">+</button>
+
+            <div class="dashboard-builder">
+                <h4>Novo dashboard</h4>
+                <input type="text" id="novo-dashboard-nome" placeholder="Nome do dashboard">
+                <div class="dashboard-cor-row">
+                    <input type="color" id="novo-dashboard-cor" value="#58a6ff">
+                    <span id="novo-dashboard-cor-preview" class="color-preview"></span>
+                </div>
+                <button id="criar-dashboard-btn" type="button">Criar dashboard</button>
+
+                <div class="cores-existentes-wrapper">
+                    <p>Paleta de cores</p>
+                    <div id="cores-existentes" class="cores-existentes"></div>
+                </div>
+
+                <h4>Editar dashboard atual</h4>
+                <input type="text" id="renomear-dashboard-nome" placeholder="Renomear dashboard">
+                <div class="dashboard-cor-row">
+                    <input type="color" id="dashboard-cor-atual">
+                    <span id="dashboard-cor-preview" class="color-preview"></span>
+                </div>
+                <button id="atualizar-dashboard-btn" type="button">Salvar alterações</button>
+
+                <p id="dashboard-mensagem" class="mensagem"></p>
+            </div>
         </aside>
 
         <!-- Conteúdo principal -->
         <main class="main-content">
             <header>
-                <h1 id="titulo-dashboard">Dashboard: Pessoal</h1>
+                <h1 id="titulo-dashboard">Pessoal</h1>
                 <p>Controle de Gastos - Lusk-WDev</p>
             </header>
 

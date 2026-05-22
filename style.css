@@ -7,7 +7,7 @@
 }
 
 body {
-    background-color: #0b0e11; /* Fundo Dark estilo GitHub/VS Code */
+    background-color: rgb(18, 34, 68); /* Fundo Dark estilo GitHub/VS Code */
     color: #e6edf3;
     display: flex;
     justify-content: center;
@@ -66,6 +66,111 @@ body {
     text-align: left;
 }
 
+.dashboard-builder {
+    margin-top: 15px;
+    display: grid;
+    gap: 12px;
+}
+
+.dashboard-builder.hidden {
+    display: none;
+}
+
+.sidebar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.toggle-builder-btn {
+    padding: 8px 12px;
+    background: #238636;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: background 0.3s;
+}
+
+.toggle-builder-btn:hover {
+    background: #2ea043;
+}
+
+.dashboard-builder h4 {
+    color: #8b949e;
+    margin-bottom: 6px;
+    font-size: 0.95rem;
+}
+
+.dashboard-builder input[type="text"] {
+    width: 100%;
+    background: #0d1117;
+    border-color: #30363d;
+}
+
+.dashboard-cor-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.color-preview {
+    width: 24px;
+    height: 24px;
+    border-radius: 6px;
+    border: 1px solid #30363d;
+    display: inline-block;
+    background: #58a6ff;
+}
+
+.cores-existentes-wrapper {
+    padding-top: 10px;
+    border-top: 1px solid #30363d;
+}
+
+.cores-existentes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.paleta-cor {
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.paleta-cor:hover {
+    transform: scale(1.05);
+    border-color: #58a6ff;
+}
+
+.mensagem {
+    min-height: 24px;
+    color: #8b949e;
+    font-size: 0.9rem;
+}
+
+.mensagem.erro {
+    color: #f85149;
+}
+
+.dashboard-color-swatch {
+    width: 18px;
+    height: 18px;
+    border-radius: 6px;
+    display: inline-block;
+    border: 1px solid #30363d;
+    cursor: pointer;
+}
+
 #lista-dashboards button:hover,
 .dashboard-btn:hover {
     background: rgba(88, 166, 255, 0.1);
@@ -88,7 +193,7 @@ body {
 }
 
 .delete-dashboard-btn:hover {
-    background: rgba(248, 81, 73, 0.3);
+    background: #f851494d;
 }
 
 .sidebar #add-dashboard {

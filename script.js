@@ -51,33 +51,94 @@ function alternarDashboard(nome) {
     }
 }
 
-function criarDashboard(nome, cor = "#58a6ff") {
-    if (!meusDashboards[nome]) {
-        meusDashboards[nome] = { transacoes: [], cor: cor };
-        dashboardAtual = nome;
-        transacoes = meusDashboards[nome].transacoes;
-        atualizarLocalStorage();
-        init();
-    }
+function showDashboardMensagem(mensagem, erro = false) {
+    dashboardMensagem.innerText = mensagem;
+    dashboardMensagem.classList.toggle('erro', erro);
+    if (!mensagem) return;
+    setTimeout(() => {
+        if (dashboardMensagem.innerText === mensagem) {
+            dashboardMensagem.innerText = '';
+        }
+    }, 5000);
 }
 
-function criarNovoDashboard() {
-    const nome = prompt("Digite o nome do novo dashboard:");
-    if (nome && nome.trim() !== "") {
-        const cor = prompt("Escolha uma cor (ex: #ff0000):", "#58a6ff");
-        criarDashboard(nome.trim(), cor || "#58a6ff");
+function criarDashboard(nome, cor = '#58a6ff') {
+    const novoNome = nome?.trim();
+    if (!novoNome) {
+        showDashboardMensagem('Digite um nome válido para o dashboard.', true);
+        return;
     }
+    if (meusDashboards[novoNome]) {
+        showDashboardMensagem('Já existe um dashboard com esse nome.', true);
+        return;
+    }
+
+    meusDashboards[novoNome] = { transacoes: [], cor };
+    dashboardAtual = novoNome;
+    transacoes = meusDashboards[dashboardAtual].transacoes;
+    atualizarLocalStorage();
+    init();
+    novoDashboardNomeInput.value = '';
+    showDashboardMensagem(`Dashboard "${novoNome}" criado com sucesso.`);
 }
 
-// Função de deletar dashboard
+function criarDashboardFromForm() {
+    criarDashboard(novoDashboardNomeInput.value, novoDashboardCorInput.value);
+}
+
+function atualizarDashboardAtual() {
+    const novoNome = renomearDashboardNomeInput.value.trim();
+    const novaCor = dashboardCorAtualInput.value || '#58a6ff';
+
+    if (!meusDashboards[dashboardAtual]) return;
+
+    if (novoNome && novoNome !== dashboardAtual) {
+        if (meusDashboards[novoNome]) {
+            showDashboardMensagem('Já existe um dashboard com esse nome.', true);
+            return;
+        }
+        const dados = meusDashboards[dashboardAtual];
+        delete meusDashboards[dashboardAtual];
+        dashboardAtual = novoNome;
+        meusDashboards[dashboardAtual] = dados;
+    }
+
+    meusDashboards[dashboardAtual].cor = novaCor;
+    transacoes = meusDashboards[dashboardAtual].transacoes;
+    atualizarLocalStorage();
+    init();
+    showDashboardMensagem('Dashboard atualizado com sucesso.');
+}
+
+function atualizarDashboardEditor() {
+    renomearDashboardNomeInput.value = dashboardAtual;
+    const corAtual = meusDashboards[dashboardAtual].cor || '#58a6ff';
+    dashboardCorAtualInput.value = corAtual;
+    dashboardCorPreview.style.background = corAtual;
+}
+
+function atualizarCoresExistentes() {
+    coresExistentesContainer.innerHTML = '';
+    Object.entries(meusDashboards).forEach(([nome, valor]) => {
+        const swatch = document.createElement('span');
+        swatch.className = 'paleta-cor';
+        swatch.style.background = valor.cor || '#58a6ff';
+        swatch.title = nome;
+        swatch.onclick = () => {
+            novoDashboardCorInput.value = valor.cor || '#58a6ff';
+            novoDashboardCorPreview.style.background = novoDashboardCorInput.value;
+        };
+        coresExistentesContainer.appendChild(swatch);
+    });
+}
+
 function deletarDashboard(nome) {
     if (!meusDashboards[nome]) return;
     const nomes = Object.keys(meusDashboards);
     if (nomes.length <= 1) {
-        alert('É preciso manter ao menos um dashboard.');
+        showDashboardMensagem('É preciso manter ao menos um dashboard.', true);
         return;
     }
-    if (!confirm(`Deseja excluir o dashboard "${nome}"?`)) return;
 
     delete meusDashboards[nome];
 
@@ -88,13 +149,8 @@ function deletarDashboard(nome) {
 
     atualizarLocalStorage();
     init();
+    showDashboardMensagem(`Dashboard "${nome}" removido.`);
 }
-
-// Expor funções globalmente para uso futuro
-window.alternarDashboard = alternarDashboard;
-window.criarDashboard = criarDashboard;
-window.criarNovoDashboard = criarNovoDashboard;
-window.deletarDashboard = deletarDashboard;
 
 // 2. Selecionamos os elementos do HTML que o JS vai manipular (os "ganchos")
 const listaTransacoes = document.getElementById('lista-transacoes');
@@ -102,6 +158,31 @@ const saldoDisplay = document.getElementById('saldo-total');
 const entradasDisplay = document.getElementById('resumo-entradas');
 const saidasDisplay = document.getElementById('resumo-saidas');
 const formulario = document.getElementById('form-transacao');
+const novoDashboardNomeInput = document.getElementById('novo-dashboard-nome');
+const novoDashboardCorInput = document.getElementById('novo-dashboard-cor');
+const novoDashboardCorPreview = document.getElementById('novo-dashboard-cor-preview');
+const criarDashboardBtn = document.getElementById('criar-dashboard-btn');
+const coresExistentesContainer = document.getElementById('cores-existentes');
+const renomearDashboardNomeInput = document.getElementById('renomear-dashboard-nome');
+const dashboardCorAtualInput = document.getElementById('dashboard-cor-atual');
+const dashboardCorPreview = document.getElementById('dashboard-cor-preview');
+const atualizarDashboardBtn = document.getElementById('atualizar-dashboard-btn');
+const dashboardMensagem = document.getElementById('dashboard-mensagem');
+const toggleDashboardBuilderBtn = document.getElementById('toggle-dashboard-builder');
+const dashboardBuilder = document.querySelector('.dashboard-builder');
+
+criarDashboardBtn.addEventListener('click', criarDashboardFromForm);
+atualizarDashboardBtn.addEventListener('click', atualizarDashboardAtual);
+novoDashboardCorInput.addEventListener('input', () => {
+    novoDashboardCorPreview.style.background = novoDashboardCorInput.value;
+});
+dashboardCorAtualInput.addEventListener('input', () => {
+    dashboardCorPreview.style.background = dashboardCorAtualInput.value;
+});
+toggleDashboardBuilderBtn.addEventListener('click', () => {
+    dashboardBuilder.classList.toggle('hidden');
+    toggleDashboardBuilderBtn.textContent = dashboardBuilder.classList.contains('hidden') ? 'Mostrar' : 'Configurar';
+});
 
 // 3. Função para renderizar as transações na tela
 function adicionarTransacaoAoDOM(transacao) {
@@ -157,6 +238,12 @@ function renderizarDashboards() {
         li.classList.add('dashboard-row');
 
         const cor = meusDashboards[nome].cor || '#58a6ff';
+        const colorSwatch = document.createElement('span');
+        colorSwatch.className = 'dashboard-color-swatch';
+        colorSwatch.style.background = cor;
+        colorSwatch.title = `${nome} - ${cor}`;
+        colorSwatch.onclick = () => alternarDashboard(nome);
+
         const button = document.createElement('button');
         button.className = 'dashboard-btn';
         if (nome === dashboardAtual) button.classList.add('ativo');
@@ -174,10 +261,13 @@ function renderizarDashboards() {
             deletarDashboard(nome);
         };
 
+        li.appendChild(colorSwatch);
         li.appendChild(button);
         li.appendChild(deleteBtn);
         lista.appendChild(li);
     });
+
+    atualizarCoresExistentes();
 }
 
 // 5. Função de Inicialização
@@ -186,12 +276,13 @@ function init() {
     transacoes.forEach(adicionarTransacaoAoDOM);
     atualizarBalanco();
     atualizarTitulo();
+    atualizarDashboardEditor();
     renderizarDashboards();
 }
 
 // Função para atualizar o título do dashboard
 function atualizarTitulo() {
-    document.getElementById('titulo-dashboard').innerText = `Dashboard: ${dashboardAtual}`;
+    document.getElementById('titulo-dashboard').innerText = dashboardAtual;
 }
 
 // ATUALIZE o evento de submit do formulário
