@@ -194,7 +194,7 @@ function adicionarTransacaoAoDOM(transacao) {
     item.innerHTML = `
         <span>${transacao.descricao}</span>
         <span>
-            ${transacao.tipo === 'entrada' ? '+' : '-'} R$ ${Math.abs(transacao.valor).toFixed(2)}
+            ${transacao.tipo === 'entrada' ? '+' : '-'} R$ ${Math.abs(transacao.valor).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
             <button class="delete-btn" onclick="removerTransacao(${transacao.id})">x</button>
         </span>
     `;
@@ -290,10 +290,19 @@ function atualizarTitulo() {
 formulario.addEventListener('submit', (event) => {
     event.preventDefault();
 
+    const descricao = document.getElementById('descricao').value.trim();
+    const rawValor = document.getElementById('valor').value.trim();
+    const valor = parseFloat(rawValor.replace(',', '.'));
+
+    if (!descricao || isNaN(valor)) {
+        showDashboardMensagem('Informe descrição e valor válidos. Use 54,75 ou 54.75.', true);
+        return;
+    }
+
     const novaTransacao = {
         id: Math.floor(Math.random() * 10000),
-        descricao: document.getElementById('descricao').value,
-        valor: parseFloat(document.getElementById('valor').value),
+        descricao,
+        valor,
         tipo: document.getElementById('tipo').value
     };
 
