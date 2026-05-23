@@ -181,7 +181,7 @@ dashboardCorAtualInput.addEventListener('input', () => {
     dashboardCorPreview.style.background = dashboardCorAtualInput.value;
 });
 valorInput.addEventListener('input', () => {
-    valorInput.value = valorInput.value.replace(/[^0-9\.,]/g, '');
+    valorInput.value = formatInputValor(valorInput.value);
 });
 toggleDashboardBuilderBtn.addEventListener('click', () => {
     const hidden = dashboardBuilder.classList.toggle('hidden');
@@ -290,36 +290,26 @@ function atualizarTitulo() {
     document.getElementById('titulo-dashboard').innerText = dashboardAtual;
 }
 
+function formatIntegerBRL(integerString) {
+    return integerString.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+}
+
+function formatInputValor(rawValor) {
+    const digits = rawValor.replace(/\D/g, '');
+    if (!digits) return '';
+
+    const centavos = digits.slice(-2).padStart(2, '0');
+    const reais = digits.slice(0, -2) || '0';
+    return `R$ ${formatIntegerBRL(reais)},${centavos}`;
+}
+
 function parseValorBRL(rawValor) {
-    const valorSemEspacos = rawValor.replace(/\s+/g, '');
-    if (!valorSemEspacos) return NaN;
-    if (!/^[0-9.,]+$/.test(valorSemEspacos)) return NaN;
+    const digits = rawValor.replace(/\D/g, '');
+    if (!digits) return NaN;
 
-    if (valorSemEspacos.includes(',')) {
-        if (valorSemEspacos.includes('.') && valorSemEspacos.indexOf('.') > valorSemEspacos.indexOf(',')) {
-            return NaN; // formato inválido: ponto após vírgula
-        }
-        const normalizado = valorSemEspacos.replace(/\./g, '').replace(',', '.');
-        return parseFloat(normalizado);
-    }
-
-    if (valorSemEspacos.includes('.')) {
-        const grupos = valorSemEspacos.split('.');
-        const ultimoGrupo = grupos[grupos.length - 1];
-        if (ultimoGrupo.length !== 3) {
-            return NaN; // ponto deve ser separador de milhares
-        }
-        return parseFloat(valorSemEspacos.replace(/\./g, ''));
-    }
-
-    if (/^\d+$/.test(valorSemEspacos)) {
-        if (valorSemEspacos.length > 4) {
-            return parseFloat(valorSemEspacos.slice(0, -2) + '.' + valorSemEspacos.slice(-2));
-        }
-        return parseFloat(valorSemEspacos + '.00');
-    }
-
-    return NaN;
+    const centavos = digits.slice(-2).padStart(2, '0');
+    const reais = digits.slice(0, -2) || '0';
+    return parseFloat(`${reais}.${centavos}`);
 }
 
 // ATUALIZE o evento de submit do formulário
