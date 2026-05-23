@@ -286,24 +286,47 @@ function atualizarTitulo() {
     document.getElementById('titulo-dashboard').innerText = dashboardAtual;
 }
 
+function parseValorBRL(rawValor) {
+    const valorSemEspacos = rawValor.replace(/\s+/g, '');
+    if (!valorSemEspacos) return NaN;
+
+    if (valorSemEspacos.includes(',')) {
+        if (valorSemEspacos.includes('.') && valorSemEspacos.indexOf('.') > valorSemEspacos.indexOf(',')) {
+            return NaN; // formato inválido: ponto após vírgula
+        }
+        const normalizado = valorSemEspacos.replace(/\./g, '').replace(',', '.');
+        return parseFloat(normalizado);
+    }
+
+    if (valorSemEspacos.includes('.')) {
+        const grupos = valorSemEspacos.split('.');
+        const ultimoGrupo = grupos[grupos.length - 1];
+        if (ultimoGrupo.length !== 3) {
+            return NaN; // ponto deve ser separador de milhares
+        }
+        return parseFloat(valorSemEspacos.replace(/\./g, ''));
+    }
+
+    if (/^\d+$/.test(valorSemEspacos)) {
+        if (valorSemEspacos.length > 4) {
+            return parseFloat(valorSemEspacos.slice(0, -2) + '.' + valorSemEspacos.slice(-2));
+        }
+        return parseFloat(valorSemEspacos + '.00');
+    }
+
+    return NaN;
+}
+
 // ATUALIZE o evento de submit do formulário
 formulario.addEventListener('submit', (event) => {
     event.preventDefault();
 
     const descricao = document.getElementById('descricao').value.trim();
     const rawValor = document.getElementById('valor').value.trim();
-
-    let valorNormalizado = rawValor;
-    if (valorNormalizado.includes(',')) {
-        valorNormalizado = valorNormalizado.replace(/\./g, '').replace(',', '.');
-    } else {
-        valorNormalizado = valorNormalizado.replace(/\./g, '');
-    }
-
-    const valor = parseFloat(valorNormalizado);
+    const valor = parseValorBRL(rawValor);
 
     if (!descricao || isNaN(valor)) {
-        showDashboardMensagem('Informe descrição e valor válidos. Use 1.000,75 ou 54,75.', true);
+        showDashboardMensagem('Informe descrição e valor válidos. Use 1.000,75, 54,75 ou 118486.', true);
         return;
     }
 
