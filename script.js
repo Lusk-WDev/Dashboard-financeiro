@@ -292,10 +292,18 @@ formulario.addEventListener('submit', (event) => {
 
     const descricao = document.getElementById('descricao').value.trim();
     const rawValor = document.getElementById('valor').value.trim();
-    const valor = parseFloat(rawValor.replace(',', '.'));
+
+    let valorNormalizado = rawValor;
+    if (valorNormalizado.includes(',')) {
+        valorNormalizado = valorNormalizado.replace(/\./g, '').replace(',', '.');
+    } else {
+        valorNormalizado = valorNormalizado.replace(/\./g, '');
+    }
+
+    const valor = parseFloat(valorNormalizado);
 
     if (!descricao || isNaN(valor)) {
-        showDashboardMensagem('Informe descrição e valor válidos. Use 54,75 ou 54.75.', true);
+        showDashboardMensagem('Informe descrição e valor válidos. Use 1.000,75 ou 54,75.', true);
         return;
     }
 
