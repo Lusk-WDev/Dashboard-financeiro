@@ -158,6 +158,7 @@ const saldoDisplay = document.getElementById('saldo-total');
 const entradasDisplay = document.getElementById('resumo-entradas');
 const saidasDisplay = document.getElementById('resumo-saidas');
 const formulario = document.getElementById('form-transacao');
+const valorInput = document.getElementById('valor');
 const novoDashboardNomeInput = document.getElementById('novo-dashboard-nome');
 const novoDashboardCorInput = document.getElementById('novo-dashboard-cor');
 const novoDashboardCorPreview = document.getElementById('novo-dashboard-cor-preview');
@@ -178,6 +179,9 @@ novoDashboardCorInput.addEventListener('input', () => {
 });
 dashboardCorAtualInput.addEventListener('input', () => {
     dashboardCorPreview.style.background = dashboardCorAtualInput.value;
+});
+valorInput.addEventListener('input', () => {
+    valorInput.value = valorInput.value.replace(/[^0-9\.,]/g, '');
 });
 toggleDashboardBuilderBtn.addEventListener('click', () => {
     const hidden = dashboardBuilder.classList.toggle('hidden');
@@ -289,6 +293,7 @@ function atualizarTitulo() {
 function parseValorBRL(rawValor) {
     const valorSemEspacos = rawValor.replace(/\s+/g, '');
     if (!valorSemEspacos) return NaN;
+    if (!/^[0-9.,]+$/.test(valorSemEspacos)) return NaN;
 
     if (valorSemEspacos.includes(',')) {
         if (valorSemEspacos.includes('.') && valorSemEspacos.indexOf('.') > valorSemEspacos.indexOf(',')) {
