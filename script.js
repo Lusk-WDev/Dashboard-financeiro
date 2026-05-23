@@ -180,8 +180,9 @@ dashboardCorAtualInput.addEventListener('input', () => {
     dashboardCorPreview.style.background = dashboardCorAtualInput.value;
 });
 toggleDashboardBuilderBtn.addEventListener('click', () => {
-    dashboardBuilder.classList.toggle('hidden');
-    toggleDashboardBuilderBtn.textContent = dashboardBuilder.classList.contains('hidden') ? 'Mostrar' : 'Configurar';
+    const hidden = dashboardBuilder.classList.toggle('hidden');
+    toggleDashboardBuilderBtn.title = hidden ? 'Mostrar painel de dashboards' : 'Configurar dashboards';
+    toggleDashboardBuilderBtn.setAttribute('aria-pressed', String(!hidden));
 });
 
 // 3. Função para renderizar as transações na tela
